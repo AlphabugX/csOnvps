@@ -1,6 +1,12 @@
-# cobaltstrike on server
+# CobaltStrike on VPS
 cobaltstrike4.4 自动化执行teamserver，快速临时开启Teamserver脚本。
+
 **Ubuntu VPS**
+
+> 一些特殊渗透项目，需要临时开全新的VPS以防止ip被溯源。
+> 每次部署cs又特别麻烦，那么csOnvps就可以解决您的烦恼
+
+
 - 解决Linux 运行Teamserver报错问题。（解决方案为切换jdk，不要用openjdk）
 - 密码为随机uuid->md5sum 值
 - teamserver修改变量改为：随机生成key、password、port等

@@ -8,11 +8,13 @@ if ((`curl https://github.com --connect-timeout 3 -m 3 -s | wc -l` > 10)) ; then
     echo "[+] Welcome to Github Script..."
     wget -c https://github.com/AlphabugX/oracle_jdk/releases/download/jdk-8u202-linux-x64/jdk-8u202-linux-x64.tar.gz 
     wget -c https://github.com/k8gege/Aggressor/releases/download/cs/K8_CS_4.4_20211109.rar
+    wget -L https://raw.githubusercontent.com/AlphabugX/csOnvps/main/teamserver
 else
     wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_aa
     wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_ab
     wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900361/download/K8_CS_4.4_20211109.rar
     cat jdk-8u202-linux-x64.tar.gz_part_* > jdk-8u202-linux-x64.tar.gz
+    wget -L https://gitee.com/Alphabug/csOnvps/raw/master/teamserver
 fi
 
 tar xf jdk-8u202-linux-x64.tar.gz 
@@ -25,7 +27,7 @@ IP=`curl ip.0xc2.cn`
 PASSWORD=`radom_key`
 KEYPASS = `radom_key`
 cd K8_CS_4.4/
-wget -L https://raw.githubusercontent.com/AlphabugX/csOnvps/main/teamserver
+mv ../teamserver .
 chmod 777 *
 
 PORT=0

@@ -1,14 +1,15 @@
 # By Alphabug
 # Github https://github.com/AlphabugX/csOnvps
 mkdir Alphabug_CS
-echo Alphabug_CS
+cd Alphabug_CS
+Alphabug_CS_PATH=`pwd`
 function radom_key(){
     KEY=`uuid | md5sum |awk -F' ' '{ print $1}'`
     echo $KEY
 }
 
 sudo apt update && sudo apt install unrar uuid -y
-if ((`curl https://github.com --connect-timeout 3 -m 3 -s | wc -l` > 10)) ; then
+if ((`curl https://github.com --connect-timeout 5 -m 5 -s | wc -l` > 10)) ; then
     echo "[+] Welcome to Github Script..."
     wget -L https://github.com/AlphabugX/csOnvps/releases/download/jdk-8u202-linux-x64/jdk-8u202-linux-x64.tar.gz
     wget -c https://github.com/k8gege/Aggressor/releases/download/cs/K8_CS_4.4_20211109.rar
@@ -23,11 +24,12 @@ else
 fi
 
 tar xf jdk-8u202-linux-x64.tar.gz 
-ln -s `pwd`/jdk1.8.0_202/bin/* /usr/bin/
+mv jdk1.8.0* jdk1.8.0
+ln -s `pwd`/jdk1.8.0/bin/* /usr/bin/
 unrar x K8_CS_4.4_20211109.rar -pk8gege.org
-
+rm -rf *.tar*
 # 改K8 CS的默认配置，改成随机
-PORT
+
 IP=`curl ip.0xc2.cn`
 PASSWORD=`radom_key`
 KEYPASS=`radom_key`
@@ -58,19 +60,21 @@ function get_random_port {
    done
 }
 get_random_port 10000 65534;
-install_log = ""
+
 # 配置teamserver
 sed -i 's/SET_TEAMSERVER_PORT/$PORT/g' teamserver
 sed -i 's/SET_TEAMSERVER_KEY/$KEYPASS/g' teamserver
-echo "[+] Teamserver IP:" $IP >> install_log
-echo "[+] Teamserver Port:" $PORT >> install_log
-echo "[+] Teamserver Password:" $PASSWORD >> install_log
-echo "[+] Teamserver keyStorePassword:" $KEYPASS >> install_log
+install_log="$Alphabug_CS_PATH/install.log"
+echo "[+] Teamserver IP:" $IP >> $install_log
+echo "[+] Teamserver Port:" $PORT >> $install_log
+echo "[+] Teamserver Password:" $PASSWORD >> $install_log
+echo "[+] Teamserver keyStorePassword:" $KEYPASS >> $install_log
 nohup ./teamserver $IP $PASSWORD &
-PID=`sudo ps -ef | grep $PASSWORD |awk -F" " '{ print $2 }' |tr "\n" " "` >> install_log
-echo "[+] Teamserver PID:" $PID >> install_log
-echo "[*] Teamserver stop command: kill -KILL " $PID >> install_log
-echo "[!] Remove Sun JDK :"  >> install_log
-echo Zm9yIGl0ZW0gaW4gYGxzIC1sc2EgL3Vzci9iaW4vIHxncmVwIGpkayB8YXdrIC1GIiAiICd7IHByaW50ICQxMH0nYDsgZG8gZWNobyAiRGVsIC91c3IvYmluLyIkaXRlbTtybSAtcmYgIi91c3IvYmluLyIkaXRlbTtkb25lCg== | base64 -d  >> install_log
+PID=`sudo ps -ef | grep $PASSWORD |awk -F" " '{ print $2 }' |tr "\n" " "` >> $install_log
+echo "[+] Teamserver PID:" $PID >> $install_log
+echo "[*] Teamserver stop Command: kill -KILL " $PID >> $install_log
+echo "[!] Remove Sun JDK Command:"  >> $install_log
+echo Zm9yIGl0ZW0gaW4gYGxzIC1sc2EgL3Vzci9iaW4vIHxncmVwIGpkayB8YXdrIC1GIiAiICd7IHByaW50ICQxMH0nYDsgZG8gZWNobyAiRGVsIC91c3IvYmluLyIkaXRlbTtybSAtcmYgIi91c3IvYmluLyIkaXRlbTtkb25lCg== | base64 -d >> $install_log
+echo "[!] Remove Alphabug_CS Command: rm -rf "$Alphabug_CS_PATH  >> $install_log
 cat $install_log
-echo "[+] Saved to "$install_log
+echo "[+] Saved to file:" $install_log

@@ -1,3 +1,6 @@
+# By Alphabug
+# Github https://github.com/AlphabugX/csOnvps
+
 function radom_key(){
     KEY=`uuid | md5sum |awk -F' ' '{ print $1}'`
     echo $KEY
@@ -6,7 +9,7 @@ function radom_key(){
 sudo apt update && sudo apt install unrar uuid -y
 if ((`curl https://github.com --connect-timeout 3 -m 3 -s | wc -l` > 10)) ; then
     echo "[+] Welcome to Github Script..."
-    wget -c https://github.com/AlphabugX/oracle_jdk/releases/download/jdk-8u202-linux-x64/jdk-8u202-linux-x64.tar.gz 
+    wget -L https://github.com/AlphabugX/csOnvps/releases/download/jdk-8u202-linux-x64/jdk-8u202-linux-x64.tar.gz
     wget -c https://github.com/k8gege/Aggressor/releases/download/cs/K8_CS_4.4_20211109.rar
     wget -L https://raw.githubusercontent.com/AlphabugX/csOnvps/main/teamserver
 else

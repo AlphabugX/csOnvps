@@ -13,5 +13,6 @@ cd K8_CS_4.4/
 chmod 777 *
 rm -rf cobaltstrike.store 
 keytool -keystore cobaltstrike.store -storepass Microsoft -keypass Microsoft -genkey -keyalg RSA -alias baidu.com -dname "CN=US, OU="baidu.com", O="Sofatest", L=Beijing, ST=Cyberspace, C=CN"
-echo $PASSWORD
-./teamserver $IP $PASSWORD
+
+echo "[+] Teamserver Password:" $PASSWORD
+./teamserver $IP $PASSWORD &

@@ -11,6 +11,13 @@ cobaltstrike4.4 自动化执行teamserver，快速临时开启Teamserver脚本�
 ```bash
 curl cs.0xc2.cn/run | bash
 ```
+
+or
+
+```bash
+curl https://raw.githubusercontent.com/AlphabugX/csOnvps/main/run.sh | bash
+```
+
 卸载命令看日志文件
 
 运行效果截图

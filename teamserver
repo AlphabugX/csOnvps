@@ -1,65 +1,80 @@
-#!/bin/bash
-# 
-# Start Cobalt Strike Team Server
-#
-
-touch TeamServer.prop
-
-TEAMSERVER_PORT="SET_TEAMSERVER_PORT"
-TEAMSERVER_KEY="SET_TEAMSERVER_KEY"
-rm -rf cobaltstrike.store
-
-
-# make pretty looking messages (thanks Carlos)
-function print_good () {
-    echo -e "\x1B[01;32m[+]\x1B[0m $1"
+# By Alphabug
+# Github https://github.com/AlphabugX/csOnvps
+mkdir Alphabug_CS
+cd Alphabug_CS
+Alphabug_CS_PATH=`pwd`
+function radom_key(){
+    KEY=`uuid | md5sum |awk -F' ' '{ print $1}'`
+    echo $KEY
 }
 
-function print_error () {
-    echo -e "\x1B[01;31m[-]\x1B[0m $1"
+sudo apt update && sudo apt install unrar uuid -y
+if ((`curl https://github.com --connect-timeout 5 -m 5 -s | wc -l` > 10)) ; then
+    echo "[+] Welcome to Github Script..."
+    wget -L https://github.com/AlphabugX/csOnvps/releases/download/jdk-8u202-linux-x64/jdk-8u202-linux-x64.tar.gz
+    wget -c https://github.com/k8gege/Aggressor/releases/download/cs/K8_CS_4.4_20211109.rar
+    wget -L https://raw.githubusercontent.com/AlphabugX/csOnvps/main/teamserver
+else
+    echo "[+] Welcome to Gitee Script..."
+    wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_aa
+    wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_ab
+    wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900361/download/K8_CS_4.4_20211109.rar
+    cat jdk-8u202-linux-x64.tar.gz_part_* > jdk-8u202-linux-x64.tar.gz
+    wget -L https://gitee.com/Alphabug/csOnvps/raw/master/teamserver
+fi
+
+tar xf jdk-8u202-linux-x64.tar.gz 
+mv jdk1.8.0* jdk1.8.0
+ln -s `pwd`/jdk1.8.0/bin/* /usr/bin/
+unrar x K8_CS_4.4_20211109.rar -pk8gege.org
+rm -rf *.tar*
+# 改K8 CS的默认配置，改成随机
+
+IP=`curl ip.0xc2.cn`
+PASSWORD=`radom_key`
+KEYPASS=`radom_key`
+cd K8_CS_4.4/
+mv ../teamserver .
+chmod 777 *
+
+PORT=0
+#判断当前端口是否被占用，没被占用返回0，反之1
+function Listening {
+   TCPListeningnum=`netstat -an | grep ":$1 " | awk '$1 == "tcp" && $NF == "LISTEN" {print $0}' | wc -l`
+   UDPListeningnum=`netstat -an | grep ":$1 " | awk '$1 == "udp" && $NF == "0.0.0.0:*" {print $0}' | wc -l`
+   (( Listeningnum = TCPListeningnum + UDPListeningnum ))
+   if [ $Listeningnum == 0 ]; then
+       echo "0"
+   else
+       echo "1"
+   fi
 }
 
-function print_info () {
-    echo -e "\x1B[01;34m[*]\x1B[0m $1"
+function get_random_port {
+   templ=0
+   while [ $PORT == 0 ]; do
+       temp1=`shuf -i $1-$2 -n1`
+       if [ `Listening $temp1` == 0 ] ; then
+              PORT=$temp1
+       fi
+   done
 }
+get_random_port 10000 65534;
 
-# check that we're r00t
-if [ $UID -ne 0 ]; then
-        print_error "Superuser privileges are required to run the team server"
-        exit
-fi
-
-# check if java is available...
-if [ $(command -v java) ]; then
-        true
-else
-        print_error "java is not in \$PATH"
-        echo "    is Java installed?"
-        exit
-fi
-
-# check if keytool is available...
-if [ $(command -v keytool) ]; then
-        true
-else
-        print_error "keytool is not in \$PATH"
-        echo "    install the Java Developer Kit"
-        exit
-fi
-
-# generate a certificate
-        # naturally you're welcome to replace this step with your own permanent certificate.
-        # just make sure you pass -Djavax.net.ssl.keyStore="/path/to/whatever" and
-        # -Djavax.net.ssl.keyStorePassword="password" to java. This is used for setting up
-        # an SSL server socket. Also, the SHA-1 digest of the first certificate in the store
-        # is printed so users may have a chance to verify they're not being owned.
-if [ -e ./cobaltstrike.store ]; then
-        print_info "Will use existing X509 certificate and keystore (for SSL)"
-else
-        print_info "Generating X509 certificate and keystore (for SSL)"
-        keytool -keystore ./cobaltstrike.store -storepass $TEAMSERVER_KEY -keypass $TEAMSERVER_KEY  -genkey -keyalg RSA -alias cobaltstrike -dname "CN=*.microsoft.com, OU=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=WA, C=US"
-fi
-echo 
-# start the team server.
-java -XX:ParallelGCThreads=4 -Dcobaltstrike.server_port=$TEAMSEVER_PORT -Dcobaltstrike.server_bindto=0.0.0.0 -Djavax.net.ssl.keyStore=./cobaltstrike.store -Djavax.net.ssl.keyStorePassword=$TEAMSERVER_KEY -server -XX:+AggressiveHeap -XX:+UseParallelGC -classpath ./cobaltstrike.jar -javaagent:hook.jar=5e98194a01c6b48fa582a6a9fcbb92d6 -Duser.language=en server.TeamServer $*
-
+# 配置teamserver
+sed -i 's/SET_TEAMSERVER_PORT/$PORT/g' teamserver
+sed -i 's/SET_TEAMSERVER_KEY/$KEYPASS/g' teamserver
+install_log="$Alphabug_CS_PATH/install.log"
+echo "[+] Teamserver IP:" $IP >> $install_log
+echo "[+] Teamserver Port:" $PORT >> $install_log
+echo "[+] Teamserver Password:" $PASSWORD >> $install_log
+echo "[+] Teamserver keyStorePassword:" $KEYPASS >> $install_log
+nohup ./teamserver $IP $PASSWORD &
+PID=`sudo ps -ef | grep $PASSWORD |awk -F" " '{ print $2 }' |tr "\n" " "` >> $install_log
+echo "[+] Teamserver PID:" $PID >> $install_log
+echo "[*] Teamserver stop Command: kill -KILL " $PID >> $install_log
+echo "[!] Remove Sun JDK Command:"  >> $install_log
+echo Zm9yIGl0ZW0gaW4gYGxzIC1sc2EgL3Vzci9iaW4vIHxncmVwIGpkayB8YXdrIC1GIiAiICd7IHByaW50ICQxMH0nYDsgZG8gZWNobyAiRGVsIC91c3IvYmluLyIkaXRlbTtybSAtcmYgIi91c3IvYmluLyIkaXRlbTtkb25lCg== | base64 -d >> $install_log
+echo "[!] Remove Alphabug_CS Command: rm -rf "$Alphabug_CS_PATH  >> $install_log
+cat $install_log
+echo "[+] Saved to file:" $install_log

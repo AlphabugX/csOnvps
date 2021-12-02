@@ -25,7 +25,7 @@ unrar x K8_CS_4.4_20211109.rar -pk8gege.org
 PORT
 IP=`curl ip.0xc2.cn`
 PASSWORD=`radom_key`
-KEYPASS = `radom_key`
+KEYPASS=`radom_key`
 cd K8_CS_4.4/
 mv ../teamserver .
 chmod 777 *

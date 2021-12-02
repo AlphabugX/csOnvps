@@ -1,19 +1,65 @@
-sudo apt update 
-sudo apt install unrar uuid -y
-wget -c https://github.com/AlphabugX/oracle_jdk/releases/download/jdk-8u202-linux-x64/jdk-8u202-linux-x64.tar.gz 
-wget -c https://github.com/k8gege/Aggressor/releases/download/cs/K8_CS_4.4_20211109.rar
+function radom_key(){
+    KEY=`uuid | md5sum |awk -F' ' '{ print $1}'`
+    echo $KEY
+}
+
+sudo apt update && sudo apt install unrar uuid -y
+if ((`curl https://github.com --connect-timeout 3 -m 3 -s | wc -l` > 10)) ; then
+    echo "[+] Welcome to Github Script..."
+    wget -c https://github.com/AlphabugX/oracle_jdk/releases/download/jdk-8u202-linux-x64/jdk-8u202-linux-x64.tar.gz 
+    wget -c https://github.com/k8gege/Aggressor/releases/download/cs/K8_CS_4.4_20211109.rar
+else
+    wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_aa
+    wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_ab
+    wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900361/download/K8_CS_4.4_20211109.rar
+    cat jdk-8u202-linux-x64.tar.gz_part_* > jdk-8u202-linux-x64.tar.gz
+fi
 
 tar xf jdk-8u202-linux-x64.tar.gz 
-ln -s ~/jdk1.8.0_202/bin/* /usr/bin/
-
+ln -s `pwd`/jdk1.8.0_202/bin/* /usr/bin/
 unrar x K8_CS_4.4_20211109.rar -pk8gege.org
-IP=`hostname -I`
-PASSWORD=`uuid | md5sum |awk -F' ' '{ print $1}'`
+
+# 改K8 CS的默认配置，改成随机
+PORT
+IP=`curl ip.0xc2.cn`
+PASSWORD=`radom_key`
+KEYPASS = `radom_key`
 cd K8_CS_4.4/
+wget -L https://raw.githubusercontent.com/AlphabugX/csOnvps/main/teamserver
 chmod 777 *
-touch TeamServer.prop
-rm -rf teamserver
-echo IyEvYmluL2Jhc2gKIyAKIyBTdGFydCBDb2JhbHQgU3RyaWtlIFRlYW0gU2VydmVyCiMKUE9SVD0wCiPliKTmlq3lvZPliY3nq6/lj6PmmK/lkKbooqvljaDnlKjvvIzmsqHooqvljaDnlKjov5Tlm54w77yM5Y+N5LmLMQpmdW5jdGlvbiBMaXN0ZW5pbmcgewogICBUQ1BMaXN0ZW5pbmdudW09YG5ldHN0YXQgLWFuIHwgZ3JlcCAiOiQxICIgfCBhd2sgJyQxID09ICJ0Y3AiICYmICRORiA9PSAiTElTVEVOIiB7cHJpbnQgJDB9JyB8IHdjIC1sYAogICBVRFBMaXN0ZW5pbmdudW09YG5ldHN0YXQgLWFuIHwgZ3JlcCAiOiQxICIgfCBhd2sgJyQxID09ICJ1ZHAiICYmICRORiA9PSAiMC4wLjAuMDoqIiB7cHJpbnQgJDB9JyB8IHdjIC1sYAogICAoKCBMaXN0ZW5pbmdudW0gPSBUQ1BMaXN0ZW5pbmdudW0gKyBVRFBMaXN0ZW5pbmdudW0gKSkKICAgaWYgWyAkTGlzdGVuaW5nbnVtID09IDAgXTsgdGhlbgogICAgICAgZWNobyAiMCIKICAgZWxzZQogICAgICAgZWNobyAiMSIKICAgZmkKfQoKI+aMh+WumuWMuumXtOmaj+acuuaVsApmdW5jdGlvbiByYW5kb21fcmFuZ2UgewogICBzaHVmIC1pICQxLSQyIC1uMQp9Cgoj5b6X5Yiw6ZqP5py656uv5Y+jCmZ1bmN0aW9uIGdldF9yYW5kb21fcG9ydCB7CiAgIHRlbXBsPTAKICAgd2hpbGUgWyAkUE9SVCA9PSAwIF07IGRvCiAgICAgICB0ZW1wMT1gcmFuZG9tX3JhbmdlICQxICQyYAogICAgICAgaWYgWyBgTGlzdGVuaW5nICR0ZW1wMWAgPT0gMCBdIDsgdGhlbgogICAgICAgICAgICAgIFBPUlQ9JHRlbXAxCiAgICAgICBmaQogICBkb25lCn0KZ2V0X3JhbmRvbV9wb3J0IDEwMDAwIDY1NTM0OwoKVEVBTVNFVkVSX1BPUlQ9JFBPUlQKVEVBTVNFUlZFUl9LRVk9YHV1aWQgfCBtZDVzdW0gfGF3ayAtRicgJyAneyBwcmludCAkMX0nYApybSAtcmYgY29iYWx0c3RyaWtlLnN0b3JlCgoKIyBtYWtlIHByZXR0eSBsb29raW5nIG1lc3NhZ2VzICh0aGFua3MgQ2FybG9zKQpmdW5jdGlvbiBwcmludF9nb29kICgpIHsKICAgIGVjaG8gLWUgIlx4MUJbMDE7MzJtWytdXHgxQlswbSAkMSIKfQoKZnVuY3Rpb24gcHJpbnRfZXJyb3IgKCkgewogICAgZWNobyAtZSAiXHgxQlswMTszMW1bLV1ceDFCWzBtICQxIgp9CgpmdW5jdGlvbiBwcmludF9pbmZvICgpIHsKICAgIGVjaG8gLWUgIlx4MUJbMDE7MzRtWypdXHgxQlswbSAkMSIKfQoKIyBjaGVjayB0aGF0IHdlJ3JlIHIwMHQKaWYgWyAkVUlEIC1uZSAwIF07IHRoZW4KICAgICAgICBwcmludF9lcnJvciAiU3VwZXJ1c2VyIHByaXZpbGVnZXMgYXJlIHJlcXVpcmVkIHRvIHJ1biB0aGUgdGVhbSBzZXJ2ZXIiCiAgICAgICAgZXhpdApmaQoKIyBjaGVjayBpZiBqYXZhIGlzIGF2YWlsYWJsZS4uLgppZiBbICQoY29tbWFuZCAtdiBqYXZhKSBdOyB0aGVuCiAgICAgICAgdHJ1ZQplbHNlCiAgICAgICAgcHJpbnRfZXJyb3IgImphdmEgaXMgbm90IGluIFwkUEFUSCIKICAgICAgICBlY2hvICIgICAgaXMgSmF2YSBpbnN0YWxsZWQ/IgogICAgICAgIGV4aXQKZmkKCiMgY2hlY2sgaWYga2V5dG9vbCBpcyBhdmFpbGFibGUuLi4KaWYgWyAkKGNvbW1hbmQgLXYga2V5dG9vbCkgXTsgdGhlbgogICAgICAgIHRydWUKZWxzZQogICAgICAgIHByaW50X2Vycm9yICJrZXl0b29sIGlzIG5vdCBpbiBcJFBBVEgiCiAgICAgICAgZWNobyAiICAgIGluc3RhbGwgdGhlIEphdmEgRGV2ZWxvcGVyIEtpdCIKICAgICAgICBleGl0CmZpCgojIGdlbmVyYXRlIGEgY2VydGlmaWNhdGUKICAgICAgICAjIG5hdHVyYWxseSB5b3UncmUgd2VsY29tZSB0byByZXBsYWNlIHRoaXMgc3RlcCB3aXRoIHlvdXIgb3duIHBlcm1hbmVudCBjZXJ0aWZpY2F0ZS4KICAgICAgICAjIGp1c3QgbWFrZSBzdXJlIHlvdSBwYXNzIC1EamF2YXgubmV0LnNzbC5rZXlTdG9yZT0iL3BhdGgvdG8vd2hhdGV2ZXIiIGFuZAogICAgICAgICMgLURqYXZheC5uZXQuc3NsLmtleVN0b3JlUGFzc3dvcmQ9InBhc3N3b3JkIiB0byBqYXZhLiBUaGlzIGlzIHVzZWQgZm9yIHNldHRpbmcgdXAKICAgICAgICAjIGFuIFNTTCBzZXJ2ZXIgc29ja2V0LiBBbHNvLCB0aGUgU0hBLTEgZGlnZXN0IG9mIHRoZSBmaXJzdCBjZXJ0aWZpY2F0ZSBpbiB0aGUgc3RvcmUKICAgICAgICAjIGlzIHByaW50ZWQgc28gdXNlcnMgbWF5IGhhdmUgYSBjaGFuY2UgdG8gdmVyaWZ5IHRoZXkncmUgbm90IGJlaW5nIG93bmVkLgppZiBbIC1lIC4vY29iYWx0c3RyaWtlLnN0b3JlIF07IHRoZW4KICAgICAgICBwcmludF9pbmZvICJXaWxsIHVzZSBleGlzdGluZyBYNTA5IGNlcnRpZmljYXRlIGFuZCBrZXlzdG9yZSAoZm9yIFNTTCkiCmVsc2UKICAgICAgICBwcmludF9pbmZvICJHZW5lcmF0aW5nIFg1MDkgY2VydGlmaWNhdGUgYW5kIGtleXN0b3JlIChmb3IgU1NMKSIKICAgICAgICBrZXl0b29sIC1rZXlzdG9yZSAuL2NvYmFsdHN0cmlrZS5zdG9yZSAtc3RvcmVwYXNzICRURUFNU0VSVkVSX0tFWSAta2V5cGFzcyAkVEVBTVNFUlZFUl9LRVkgIC1nZW5rZXkgLWtleWFsZyBSU0EgLWFsaWFzIGNvYmFsdHN0cmlrZSAtZG5hbWUgIkNOPSoubWljcm9zb2Z0LmNvbSwgT1U9TWljcm9zb2Z0IENvcnBvcmF0aW9uLCBPPU1pY3Jvc29mdCBDb3Jwb3JhdGlvbiwgTD1SZWRtb25kLCBTPVdBLCBDPVVTIgpmaQoKIyBzdGFydCB0aGUgdGVhbSBzZXJ2ZXIuCmphdmEgLVhYOlBhcmFsbGVsR0NUaHJlYWRzPTQgLURjb2JhbHRzdHJpa2Uuc2VydmVyX3BvcnQ9JFRFQU1TRVZFUl9QT1JUIC1EY29iYWx0c3RyaWtlLnNlcnZlcl9iaW5kdG89MC4wLjAuMCAtRGphdmF4Lm5ldC5zc2wua2V5U3RvcmU9Li9jb2JhbHRzdHJpa2Uuc3RvcmUgLURqYXZheC5uZXQuc3NsLmtleVN0b3JlUGFzc3dvcmQ9JFRFQU1TRVJWRVJfS0VZIC1zZXJ2ZXIgLVhYOitBZ2dyZXNzaXZlSGVhcCAtWFg6K1VzZVBhcmFsbGVsR0MgLWNsYXNzcGF0aCAuL2NvYmFsdHN0cmlrZS5qYXIgLWphdmFhZ2VudDpob29rLmphcj01ZTk4MTk0YTAxYzZiNDhmYTU4MmE2YTlmY2JiOTJkNiAtRHVzZXIubGFuZ3VhZ2U9ZW4gc2VydmVyLlRlYW1TZXJ2ZXIgJCoKCg== | base64 -d > teamserver
-chmod 777 teamserver
+
+PORT=0
+#判断当前端口是否被占用，没被占用返回0，反之1
+function Listening {
+   TCPListeningnum=`netstat -an | grep ":$1 " | awk '$1 == "tcp" && $NF == "LISTEN" {print $0}' | wc -l`
+   UDPListeningnum=`netstat -an | grep ":$1 " | awk '$1 == "udp" && $NF == "0.0.0.0:*" {print $0}' | wc -l`
+   (( Listeningnum = TCPListeningnum + UDPListeningnum ))
+   if [ $Listeningnum == 0 ]; then
+       echo "0"
+   else
+       echo "1"
+   fi
+}
+
+function get_random_port {
+   templ=0
+   while [ $PORT == 0 ]; do
+       temp1=`shuf -i $1-$2 -n1`
+       if [ `Listening $temp1` == 0 ] ; then
+              PORT=$temp1
+       fi
+   done
+}
+get_random_port 10000 65534;
+
+# 配置teamserver
+sed -i 's/SET_TEAMSERVER_PORT/$PORT/g' teamserver
+sed -i 's/SET_TEAMSERVER_KEY/$KEYPASS/g' teamserver
+echo "[+] Teamserver IP:" $IP
+echo "[+] Teamserver Port:" $PORT
 echo "[+] Teamserver Password:" $PASSWORD
-./teamserver $IP $PASSWORD &
+echo "[+] Teamserver keyStorePassword:" $KEYPASS
+nohup ./teamserver $IP $PASSWORD &
+PID=`sudo ps -ef | grep $PASSWORD |awk -F" " '{ print $2 }' |tr "\n" " "`
+echo "[+] Teamserver PID:" $PID
+echo "[*] Teamserver stop command: kill -KILL " $PID

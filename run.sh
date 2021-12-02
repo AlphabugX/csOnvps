@@ -10,6 +10,7 @@ if ((`curl https://github.com --connect-timeout 3 -m 3 -s | wc -l` > 10)) ; then
     wget -c https://github.com/k8gege/Aggressor/releases/download/cs/K8_CS_4.4_20211109.rar
     wget -L https://raw.githubusercontent.com/AlphabugX/csOnvps/main/teamserver
 else
+    echo "[+] Welcome to Gitee Script..."
     wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_aa
     wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_ab
     wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900361/download/K8_CS_4.4_20211109.rar

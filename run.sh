@@ -1,6 +1,7 @@
 # By Alphabug
 # Github https://github.com/AlphabugX/csOnvps
-
+mkdir Alphabug_CS
+echo Alphabug_CS
 function radom_key(){
     KEY=`uuid | md5sum |awk -F' ' '{ print $1}'`
     echo $KEY
@@ -57,15 +58,19 @@ function get_random_port {
    done
 }
 get_random_port 10000 65534;
-
+install_log = ""
 # 配置teamserver
 sed -i 's/SET_TEAMSERVER_PORT/$PORT/g' teamserver
 sed -i 's/SET_TEAMSERVER_KEY/$KEYPASS/g' teamserver
-echo "[+] Teamserver IP:" $IP
-echo "[+] Teamserver Port:" $PORT
-echo "[+] Teamserver Password:" $PASSWORD
-echo "[+] Teamserver keyStorePassword:" $KEYPASS
+echo "[+] Teamserver IP:" $IP >> install_log
+echo "[+] Teamserver Port:" $PORT >> install_log
+echo "[+] Teamserver Password:" $PASSWORD >> install_log
+echo "[+] Teamserver keyStorePassword:" $KEYPASS >> install_log
 nohup ./teamserver $IP $PASSWORD &
-PID=`sudo ps -ef | grep $PASSWORD |awk -F" " '{ print $2 }' |tr "\n" " "`
-echo "[+] Teamserver PID:" $PID
-echo "[*] Teamserver stop command: kill -KILL " $PID
+PID=`sudo ps -ef | grep $PASSWORD |awk -F" " '{ print $2 }' |tr "\n" " "` >> install_log
+echo "[+] Teamserver PID:" $PID >> install_log
+echo "[*] Teamserver stop command: kill -KILL " $PID >> install_log
+echo "[!] Remove Sun JDK :"  >> install_log
+echo Zm9yIGl0ZW0gaW4gYGxzIC1sc2EgL3Vzci9iaW4vIHxncmVwIGpkayB8YXdrIC1GIiAiICd7IHByaW50ICQxMH0nYDsgZG8gZWNobyAiRGVsIC91c3IvYmluLyIkaXRlbTtybSAtcmYgIi91c3IvYmluLyIkaXRlbTtkb25lCg== | base64 -d  >> install_log
+cat $install_log
+echo "[+] Saved to "$install_log

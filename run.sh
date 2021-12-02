@@ -11,6 +11,7 @@ IP=`hostname -I`
 PASSWORD=`uuid | md5sum |awk -F' ' '{ print $1}'`
 cd K8_CS_4.4/
 chmod 777 *
+touch TeamServer.prop
 rm -rf cobaltstrike.store 
 keytool -keystore cobaltstrike.store -storepass Microsoft -keypass Microsoft -genkey -keyalg RSA -alias baidu.com -dname "CN=US, OU="baidu.com", O="Sofatest", L=Beijing, ST=Cyberspace, C=CN"
 

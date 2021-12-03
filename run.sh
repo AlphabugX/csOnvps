@@ -24,10 +24,10 @@ else
 fi
 
 tar xf jdk-8u202-linux-x64.tar.gz 
-mv jdk1.8.0* jdk1.8.0
-ln -s `pwd`/jdk1.8.0/bin/* /usr/bin/
+
+ln -s $Alphabug_CS_PATH/jdk1.8.0_202/bin/* /usr/bin/
 unrar x K8_CS_4.4_20211109.rar -pk8gege.org
-rm -rf *.tar*
+# rm -rf *.tar*
 # 改K8 CS的默认配置，改成随机
 
 IP=`curl ip.0xc2.cn`
@@ -62,14 +62,19 @@ function get_random_port {
 get_random_port 10000 65534;
 
 # 配置teamserver
-sed -i 's/SET_TEAMSERVER_PORT/$PORT/g' teamserver
-sed -i 's/SET_TEAMSERVER_KEY/$KEYPASS/g' teamserver
+sed -i "s/SET_TEAMSERVER_PORT/$PORT/g" teamserver
+sed -i "s/SET_TEAMSERVER_KEY/$KEYPASS/g" teamserver
+
 install_log="$Alphabug_CS_PATH/install.log"
+#rm -rf install_log
 echo "[+] Teamserver IP:" $IP >> $install_log
 echo "[+] Teamserver Port:" $PORT >> $install_log
 echo "[+] Teamserver Password:" $PASSWORD >> $install_log
 echo "[+] Teamserver keyStorePassword:" $KEYPASS >> $install_log
-nohup ./teamserver $IP $PASSWORD &
+
+dos2unix teamserver
+nohup $Alphabug_CS_PATH/K8_CS_4.4/teamserver $IP $PASSWORD &
+
 PID=`sudo ps -ef | grep $PASSWORD |awk -F" " '{ print $2 }' |tr "\n" " "` >> $install_log
 echo "[+] Teamserver PID:" $PID >> $install_log
 echo "[*] Teamserver stop Command: kill -KILL " $PID >> $install_log
@@ -78,3 +83,4 @@ echo Zm9yIGl0ZW0gaW4gYGxzIC1sc2EgL3Vzci9iaW4vIHxncmVwIGpkayB8YXdrIC1GIiAiICd7IHB
 echo "[!] Remove Alphabug_CS Command: rm -rf "$Alphabug_CS_PATH  >> $install_log
 cat $install_log
 echo "[+] Saved to file:" $install_log
+echo "====================================================" >> $install_log

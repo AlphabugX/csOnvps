@@ -1,4 +1,3 @@
-
 #!/bin/bash
 # 
 # Start Cobalt Strike Team Server
@@ -62,4 +61,5 @@ else
 fi
 echo 
 # start the team server.
-java -XX:ParallelGCThreads=4 -Dcobaltstrike.server_port=$TEAMSEVER_PORT -Dcobaltstrike.server_bindto=0.0.0.0 -Djavax.net.ssl.keyStore=./cobaltstrike.store -Djavax.net.ssl.keyStorePassword=$TEAMSERVER_KEY -server -XX:+AggressiveHeap -XX:+UseParallelGC -classpath ./cobaltstrike.jar -javaagent:hook.jar=5e98194a01c6b48fa582a6a9fcbb92d6 -Duser.language=en server.TeamServer $*
+java -XX:ParallelGCThreads=4 -Dcobaltstrike.server_port=$TEAMSERVER_PORT -Dcobaltstrike.server_bindto=0.0.0.0 -Djavax.net.ssl.keyStore=./cobaltstrike.store -Djavax.net.ssl.keyStorePassword=$TEAMSERVER_KEY -server -XX:+AggressiveHeap -XX:+UseParallelGC -classpath ./cobaltstrike.jar -javaagent:hook.jar=5e98194a01c6b48fa582a6a9fcbb92d6 -Duser.language=en server.TeamServer $*
+

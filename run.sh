@@ -8,7 +8,8 @@ function radom_key(){
     echo $KEY
 }
 
-sudo apt update && sudo apt install unrar uuid -y
+sudo apt update && sudo apt install unrar uuid curl wget uuid net-tools dos2unix -y
+
 if ((`curl https://github.com --connect-timeout 5 -m 5 -s | wc -l` > 10)) ; then
     echo "[+] Welcome to Github Script..."
     wget -L https://github.com/AlphabugX/csOnvps/releases/download/jdk-8u202-linux-x64/jdk-8u202-linux-x64.tar.gz

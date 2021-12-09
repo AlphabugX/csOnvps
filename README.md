@@ -32,3 +32,4 @@ curl https://raw.githubusercontent.com/AlphabugX/csOnvps/main/run.sh | bash
 
 ## 更新日志
 - 2021年12月2日 16:55:46 修复多个bug、修复无法访问github切换gitee进行拉取、添加安装日志、添加卸载命令提示、正式版本1.0发布。
+- 2021年12月09日10:03:55 修复没有 curl wget uuid net-tools dos2unix相关软件，添加curl wget uuid net-tools dos2unix安装。

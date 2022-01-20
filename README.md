@@ -1,6 +1,7 @@
-![image](https://user-images.githubusercontent.com/27001865/150347697-4dcd401f-c664-43e1-a388-cc8055d34343.png)
 # CobaltStrike on VPS
 cobaltstrike4.4 自动化执行teamserver，快速临时开启Teamserver脚本。
+
+![image](https://user-images.githubusercontent.com/27001865/150347697-4dcd401f-c664-43e1-a388-cc8055d34343.png)
 
 **Ubuntu VPS**
 

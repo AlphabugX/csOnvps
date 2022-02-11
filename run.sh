@@ -25,7 +25,7 @@ function download_jdk {
         K8_CS_FILE="YES"
     fi
 
-    if ((`curl https://github.com --connect-timeout 5 -m 5 -s | wc -l` > 10)) ; then
+    if ((`curl https://objects.githubusercontent.com --connect-timeout 5 -m 5 -s | wc -l` > 10)) ; then
         echo "[+] Welcome to Github Script..."
         wget -L https://github.com/AlphabugX/csOnvps/releases/download/jdk-8u202-linux-x64/jdk-8u202-linux-x64.tar.gz
         if [ $K8_CS_FILE == "YES" ];then

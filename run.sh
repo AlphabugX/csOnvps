@@ -1,3 +1,4 @@
+#!/bin/bash
 # By Alphabug
 # Github https://github.com/AlphabugX/csOnvps
 mkdir Alphabug_CS

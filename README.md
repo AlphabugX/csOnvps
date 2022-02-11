@@ -39,4 +39,5 @@ uninstall.sh 脚本
 - 2021年12月2日 16:55:46 修复多个bug、修复无法访问github切换gitee进行拉取、添加安装日志、添加卸载命令提示、正式版本1.0发布。
 - 2021年12月09日10:03:55 修复没有 curl wget uuid net-tools dos2unix相关软件，添加curl wget uuid net-tools dos2unix安装。
 - 2022年1月17日 12:21:02 添加验证本地已经安装jdk环境变量、支持离线下载的JDK文件与CS文件压缩包md5sum校验，添加Uninstall.sh一键移除cs工具环境。使用 update-alternatives 切换jdk版本以防止原本的系统环境出现问题。
+- 2022年2月11日 12:43:20 修复run.sh文件中判断是否能够访问github资源地址、github下载资源地址、gitee下载资源地址，添加bash文件头信息。
 

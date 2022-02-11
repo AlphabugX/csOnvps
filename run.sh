@@ -34,7 +34,7 @@ function download_jdk {
         wget -L https://raw.githubusercontent.com/AlphabugX/csOnvps/main/teamserver
     else
         echo "[+] Welcome to Gitee Script..."
-        wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_aa
+        wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900306/download/jdk-8u202-linux-x64.tar.gz_part_aa
         wget -L https://gitee.com/Alphabug/csOnvps/attach_files/900305/download/jdk-8u202-linux-x64.tar.gz_part_ab
         
         if [ $K8_CS_FILE == "YES" ];then

@@ -65,6 +65,8 @@ if [ `echo $(java -version 2>&1) | awk -F" " '{print $1$3}' | tr -d '"'` != "jav
     JDK_PATH=$Alphabug_CS_PATH/jdk1.8.0_202/
     update-alternatives --install /usr/bin/java java $JDK_PATH/bin/java 180202
     update-alternatives --set java $JDK_PATH/bin/java
+    update-alternatives --install /usr/bin/keytool keytool $JDK_PATH/bin/keytool 180202
+    update-alternatives --set java $JDK_PATH/bin/keytool
     JDK_FLAG="NO"
 fi
 

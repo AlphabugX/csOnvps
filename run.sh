@@ -122,7 +122,7 @@ echo "[+] Teamserver keyStorePassword:" $KEYPASS >> $install_log
 
 nohup $Alphabug_CS_PATH/K8_CS_4.4/teamserver $IP $PASSWORD &
 
-PID=`sudo ps aux | grep "java" | grep "$SERVER_PASSWORD" | awk -F " " '{print $2}' | tr "\n" " "` >> $install_log
+PID=`sudo ps aux | grep "java" | grep "$PASSWORD" | awk -F " " '{print $2}' | tr "\n" " "` >> $install_log
 echo "[+] Teamserver PID:" $PID >> $install_log
 echo "[*] Teamserver stop Command: kill -KILL " $PID >> $install_log
 if [ $JDK_FLAG == "NO" ];then
